@@ -20,15 +20,19 @@
     var CONFIG = {"hostname":"jvavmaster.github.io","root":"/onlycpfans/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Onlycpfans">
-<meta property="og:url" content="https://jvavmaster.github.io/onlycpfans/archives/2024/07/index.html">
+  <meta name="description" content="(洛谷 | P3131 [USACO16JAN] Subsequences Summing to Sevens S)[https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;problem&#x2F;P3131] (洛谷 | P1387 最大正方形)[https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;problem&#x2F;P1387] (洛谷 | P3397 地毯)[https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前缀和|差分">
+<meta property="og:url" content="https://jvavmaster.github.io/onlycpfans/2024/07/13/%E5%89%8D%E7%BC%80%E5%92%8C%E4%B8%8E%E5%B7%AE%E5%88%86/index.html">
 <meta property="og:site_name" content="Onlycpfans">
+<meta property="og:description" content="(洛谷 | P3131 [USACO16JAN] Subsequences Summing to Sevens S)[https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;problem&#x2F;P3131] (洛谷 | P1387 最大正方形)[https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;problem&#x2F;P1387] (洛谷 | P3397 地毯)[https:&#x2F;&#x2F;www.luogu.com.cn&#x2F;">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-07-13T13:34:43.000Z">
+<meta property="article:modified_time" content="2024-07-13T13:49:42.811Z">
 <meta property="article:author" content="CPF">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jvavmaster.github.io/onlycpfans/archives/2024/07/">
+<link rel="canonical" href="https://jvavmaster.github.io/onlycpfans/2024/07/13/%E5%89%8D%E7%BC%80%E5%92%8C%E4%B8%8E%E5%B7%AE%E5%88%86/">
 
 
 <script id="page-configurations">
@@ -36,12 +40,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | Onlycpfans</title>
+  <title>前缀和|差分 | Onlycpfans</title>
   
 
 
@@ -164,130 +168,92 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 5 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jvavmaster.github.io/onlycpfans/2024/07/13/%E5%89%8D%E7%BC%80%E5%92%8C%E4%B8%8E%E5%B7%AE%E5%88%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/onlycpfans/images/avatar.gif">
+      <meta itemprop="name" content="CPF">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Onlycpfans">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          前缀和|差分
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2024-07-13 21:34:43 / 修改时间：21:49:42" itemprop="dateCreated datePublished" datetime="2024-07-13T21:34:43+08:00">2024-07-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/onlycpfans/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">算法学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2024</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-07-13T21:34:43+08:00"
-              content="2024-07-13">
-          07-13
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/onlycpfans/2024/07/13/%E5%89%8D%E7%BC%80%E5%92%8C%E4%B8%8E%E5%B7%AE%E5%88%86/" itemprop="url">
-            <span itemprop="name">前缀和|差分</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-07-13T11:09:40+08:00"
-              content="2024-07-13">
-          07-13
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/onlycpfans/2024/07/13/%E6%AC%A2%E8%BF%8E%E6%8A%A5%E8%80%83%E6%9D%AD%E5%B7%9E%E7%94%B5%E5%AD%90%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6/" itemprop="url">
-            <span itemprop="name">欢迎报考杭州电子科技大学~</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-07-11T17:46:59+08:00"
-              content="2024-07-11">
-          07-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/onlycpfans/2024/07/11/%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98/" itemprop="url">
-            <span itemprop="name">背包问题</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-07-10T08:35:12+08:00"
-              content="2024-07-10">
-          07-10
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/onlycpfans/2024/07/10/%E4%B8%89%E4%BD%93%20%C2%B7%20%E8%B0%8E%E4%B8%AD%E5%BE%80%E4%BA%8B/" itemprop="url">
-            <span itemprop="name">三体 · 谎中往事</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2024-07-09T21:38:18+08:00"
-              content="2024-07-09">
-          07-09
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/onlycpfans/2024/07/09/%E5%AD%9D%E7%BB%8F%20%C2%B7%20%E6%98%A5%E7%BA%A6/" itemprop="url">
-            <span itemprop="name">孝经 · 春约</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <ul>
+<li>(洛谷 | P3131 [USACO16JAN] Subsequences Summing to Sevens S)[<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3131]">https://www.luogu.com.cn/problem/P3131]</a></li>
+<li>(洛谷 | P1387 最大正方形)[<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P1387]">https://www.luogu.com.cn/problem/P1387]</a></li>
+<li>(洛谷 | P3397 地毯)[<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P3397]">https://www.luogu.com.cn/problem/P3397]</a></li>
+<li>(洛谷 | P2280 [HNOI2003]激光炸弹)[<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P2280]">https://www.luogu.com.cn/problem/P2280]</a></li>
+<li>(洛谷 | P4552 [Poetize6] IncDec Sequence)[<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P4552]">https://www.luogu.com.cn/problem/P4552]</a></li>
+</ul>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/onlycpfans/2024/07/13/%E6%AC%A2%E8%BF%8E%E6%8A%A5%E8%80%83%E6%9D%AD%E5%B7%9E%E7%94%B5%E5%AD%90%E7%A7%91%E6%8A%80%E5%A4%A7%E5%AD%A6/" rel="prev" title="欢迎报考杭州电子科技大学~">
+      <i class="fa fa-chevron-left"></i> 欢迎报考杭州电子科技大学~
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
