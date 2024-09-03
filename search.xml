@@ -124,4 +124,56 @@
         <category>算法学习</category>
       </categories>
   </entry>
+  <entry>
+    <title></title>
+    <url>/onlycpfans/2024/09/03/vue%E4%B8%ADthis%E6%8C%87%E5%90%91%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="vue中的this指向问题"><a href="#vue中的this指向问题" class="headerlink" title="vue中的this指向问题"></a>vue中的this指向问题</h1><ol>
+<li><p>**组件方法中的 <code>this</code>**：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  <span class="title function_">greet</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Hello, <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>!`</span>); <span class="comment">// this 指向组件实例</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>this</code> 指向：组件实例。</li>
+</ul>
+</li>
+<li><p>**箭头函数中的 <code>this</code>**：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  <span class="attr">greet</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Hello, <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>!`</span>); <span class="comment">// this 不指向组件实例，指向定义时的上下文（通常是 window）</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>this</code> 指向：定义箭头函数时的上下文，通常在非模块化代码中是 <code>window</code>。</li>
+</ul>
+</li>
+<li><p>**生命周期钩子中的 <code>this</code>**：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">created</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// this 指向 Vue 实例</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>this</code> 指向：Vue 实例。</li>
+</ul>
+</li>
+<li><p>**事件处理器中的 <code>this</code>**：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;handleClick&quot;</span>&gt;</span>Click me<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  <span class="title function_">handleClick</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// this 指向组件实例</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>this</code> 指向：组件实例。</li>
+</ul>
+</li>
+<li><p>**回调函数中的 <code>this</code>**：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  <span class="title function_">later</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// this 指向 window 或 undefined（严格模式下）</span></span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">laterArrow</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// this 指向组件实例</span></span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>later</code> 方法中的 <code>this</code> 指向：<code>window</code> 对象（在非严格模式下）或 <code>undefined</code>（在严格模式下）。</li>
+<li><code>laterArrow</code> 方法中的 <code>this</code> 指向：组件实例。</li>
+</ul>
+</li>
+<li><p><strong>使用 <code>bind</code> 方法</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  <span class="title function_">greet</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// this 指向 window 或 undefined</span></span><br><span class="line">    &#125;.<span class="title function_">bind</span>(<span class="variable language_">this</span>), <span class="number">1000</span>); <span class="comment">// 使用 .bind 使 this 指向组件实例</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>setTimeout</code> 回调中的 <code>this</code> 指向：组件实例，因为使用了 <code>.bind(this)</code>。</li>
+</ul>
+</li>
+<li><p><strong>保存 <code>this</code> 引用</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  <span class="title function_">greet</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">const</span> self = <span class="variable language_">this</span>; <span class="comment">// 保存 this 引用</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(self); <span class="comment">// self 指向组件实例</span></span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>setTimeout</code> 回调中的 <code>self</code> 指向：组件实例。</li>
+</ul>
+</li>
+</ol>
+<p>在 Vue 组件中，通常我们希望 <code>this</code> 指向当前组件实例，以便可以访问组件的数据和方法。箭头函数和 <code>.bind</code> 方法的使用会影响 <code>this</code> 的指向，因此在编写代码时需要特别注意。</p>
+]]></content>
+  </entry>
 </search>
