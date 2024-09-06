@@ -177,7 +177,7 @@
 ]]></content>
   </entry>
   <entry>
-    <title>背包问题</title>
+    <title>闭包</title>
     <url>/onlycpfans/2024/09/06/%E9%97%AD%E5%8C%85/</url>
     <content><![CDATA[<h3 id="闭包的实现"><a href="#闭包的实现" class="headerlink" title="闭包的实现"></a>闭包的实现</h3><p>在JavaScript等支持一级函数的语言中，闭包通常是这样实现的：</p>
 <ol>
