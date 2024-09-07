@@ -138,9 +138,13 @@
 <li><p>**箭头函数中的 <code>this</code>**：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  <span class="attr">greet</span>: <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Hello, <span class="subst">$&#123;<span class="variable language_">this</span>.name&#125;</span>!`</span>); <span class="comment">// this 不指向组件实例，指向定义时的上下文（通常是 window）</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><code>this</code> 指向：定义箭头函数时的上下文，通常在非模块化代码中是 <code>window</code>。<span id="more"></span></li>
+<li><code>this</code> 指向：定义箭头函数时的上下文，通常在非模块化代码中是 <code>window</code>。</li>
 </ul>
 </li>
+</ol>
+<span id="more"></span>
+
+<ol start="3">
 <li><p>**生命周期钩子中的 <code>this</code>**：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">created</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">this</span>); <span class="comment">// this 指向 Vue 实例</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
