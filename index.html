@@ -273,10 +273,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2025-03-15 20:38:14 / 修改时间：20:47:38" itemprop="dateCreated datePublished" datetime="2025-03-15T20:38:14+08:00">2025-03-15</time>
+              <time title="创建时间：2025-03-15 20:38:14" itemprop="dateCreated datePublished" datetime="2025-03-15T20:38:14+08:00">2025-03-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2025-03-25 19:31:38" itemprop="dateModified" datetime="2025-03-25T19:31:38+08:00">2025-03-25</time>
+              </span>
 
           
 
@@ -295,132 +301,15 @@
 <li><strong>自动触发</strong>：<ul>
 <li>根据配置文件中的 <code>save</code> 指令触发。例如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">save 900 1       # 如果900秒内至少有1个键被修改，则触发快照</span><br><span class="line">save 300 10      # 如果300秒内至少有10个键被修改，则触发快照</span><br><span class="line">save 60 10000    # 如果60秒内至少有10000个键被修改，则触发快照</span><br></pre></td></tr></table></figure>
 当满足上述条件之一时，Redis 会自动触发一次快照操作。</li>
-<li>在 Redis 重启时，如果配置了 <code>save</code> 指令，Redis 会自动加载 <code>.rdb</code> 文件恢复数据。</li>
-</ul>
-</li>
-<li><strong>手动触发</strong>：<ul>
-<li>使用命令 <code>SAVE</code>：在主线程中同步生成快照，阻塞主线程，直到快照生成完成。</li>
-<li>使用命令 <code>BGSAVE</code>：在后台子进程中异步生成快照，不会阻塞主线程。</li>
-</ul>
-</li>
-</ul>
-<h4 id="（2）快照生成过程"><a href="#（2）快照生成过程" class="headerlink" title="（2）快照生成过程"></a>（2）<strong>快照生成过程</strong></h4><ol>
-<li><strong>检查是否已经在生成快照</strong>：<ul>
-<li>如果当前正在执行 <code>BGSAVE</code> 或 <code>BGREWRITEAOF</code>，Redis 会拒绝再次执行 <code>BGSAVE</code>，以避免同时运行多个子进程。</li>
-</ul>
-</li>
-<li><strong>创建子进程</strong>：<ul>
-<li>如果执行的是 <code>BGSAVE</code>，Redis 会通过 <code>fork()</code> 创建一个子进程。子进程会继承父进程的数据空间，但不会阻塞父进程。</li>
-<li>在子进程中，Redis 会遍历内存中的所有数据，并将数据以 RDB 格式写入到一个临时文件中。</li>
-</ul>
-</li>
-<li><strong>原子替换文件</strong>：<ul>
-<li>当子进程完成快照操作后，Redis 会将临时文件重命名为指定的 RDB 文件名（默认为 <code>dump.rdb</code>），并替换旧的快照文件。</li>
-<li>如果执行的是 <code>SAVE</code>，则直接在主线程中完成快照操作，阻塞主线程。</li>
-</ul>
-</li>
-</ol>
-<h4 id="（3）恢复过程"><a href="#（3）恢复过程" class="headerlink" title="（3）恢复过程"></a>（3）<strong>恢复过程</strong></h4><ul>
-<li>当 Redis 服务启动时，如果配置了 RDB 持久化，Redis 会自动加载 <code>.rdb</code> 文件。</li>
-<li>Redis 会读取 RDB 文件，并将文件中的数据加载到内存中，恢复数据状态。</li>
-<li>如果同时使用了 AOF 持久化，RDB 文件会先被加载，然后应用 AOF 日志中的增量数据。</li>
-</ul>
-<hr>
-<h3 id="2-AOF（Append-Only-File）工作流程"><a href="#2-AOF（Append-Only-File）工作流程" class="headerlink" title="2. AOF（Append Only File）工作流程"></a>2. AOF（Append Only File）工作流程</h3><h4 id="（1）日志记录过程"><a href="#（1）日志记录过程" class="headerlink" title="（1）日志记录过程"></a>（1）<strong>日志记录过程</strong></h4><ol>
-<li><strong>配置 AOF 持久化</strong>：<ul>
-<li>在配置文件中设置 <code>appendonly yes</code>，启用 AOF 持久化。</li>
-<li>可以设置 <code>appendfilename</code> 来指定 AOF 文件的名称（默认为 <code>appendonly.aof</code>）。</li>
-</ul>
-</li>
-<li><strong>记录写操作</strong>：<ul>
-<li>当 Redis 执行写操作（如 <code>SET</code>、<code>LPUSH</code>、<code>INCR</code> 等）时，会将这些命令以 Redis 命令协议的格式追加到 AOF 文件中。</li>
-<li>AOF 文件是一个纯文本文件，记录了所有写操作的命令和参数。</li>
-</ul>
-</li>
-</ol>
-<h4 id="（2）同步方式"><a href="#（2）同步方式" class="headerlink" title="（2）同步方式"></a>（2）<strong>同步方式</strong></h4><p>AOF 提供了三种同步方式，控制写操作何时同步到磁盘：</p>
-<ul>
-<li>**<code>appendfsync always</code>**：<ul>
-<li>每次写操作都会立即同步到磁盘，数据安全性最高，但性能开销最大。</li>
-</ul>
-</li>
-<li>**<code>appendfsync everysec</code>**：<ul>
-<li>每秒同步一次，兼顾性能和数据安全性。这是推荐的默认设置。</li>
-</ul>
-</li>
-<li>**<code>appendfsync no</code>**：<ul>
-<li>由操作系统决定何时同步到磁盘，性能最好，但数据丢失风险最高。</li>
-</ul>
-</li>
-</ul>
-<h4 id="（3）日志重写（Rewrite）"><a href="#（3）日志重写（Rewrite）" class="headerlink" title="（3）日志重写（Rewrite）"></a>（3）<strong>日志重写（Rewrite）</strong></h4><ul>
-<li><strong>背景</strong>：随着时间推移，AOF 文件会变得越来越大，因为每个写操作都会被追加到文件中。为了压缩文件大小，Redis 提供了日志重写机制。</li>
-<li><strong>触发方式</strong>：<ul>
-<li>手动触发：使用命令 <code>BGREWRITEAOF</code>。</li>
-<li>自动触发：根据配置文件中的 <code>auto-aof-rewrite-percentage</code> 和 <code>auto-aof-rewrite-min-size</code> 参数自动触发。例如：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br></pre></td></tr></table></figure>
-表示当 AOF 文件大小超过上次重写后的大小的 100%，并且文件大小超过 64MB 时，自动触发 AOF 重写。</li>
-</ul>
-</li>
-<li><strong>重写过程</strong>：<ol>
-<li>Redis 通过 <code>fork()</code> 创建一个子进程。</li>
-<li>子进程会读取当前内存中的数据，并以更紧凑的方式重新生成 AOF 文件。</li>
-<li>在重写过程中，主进程会继续将新的写操作追加到临时 AOF 文件中。</li>
-<li>当子进程完成重写后，Redis 会用新的 AOF 文件替换旧的 AOF 文件，并将临时文件中的增量数据追加到新的 AOF 文件中。</li>
-</ol>
-</li>
-</ul>
-<h4 id="（4）恢复过程"><a href="#（4）恢复过程" class="headerlink" title="（4）恢复过程"></a>（4）<strong>恢复过程</strong></h4><ul>
-<li>当 Redis 服务启动时，如果配置了 AOF 持久化，Redis 会自动加载 AOF 文件。</li>
-<li>Redis 会从 AOF 文件的开头开始，逐条读取并执行文件中的命令，恢复数据状态。</li>
-<li>如果 AOF 文件在崩溃时被截断，可以使用 <code>redis-check-aof</code> 工具修复文件。</li>
-</ul>
-<hr>
-<h3 id="3-RDB-和-AOF-的结合使用"><a href="#3-RDB-和-AOF-的结合使用" class="headerlink" title="3. RDB 和 AOF 的结合使用"></a>3. RDB 和 AOF 的结合使用</h3><p>在实际生产环境中，通常会同时使用 RDB 和 AOF，以兼顾数据安全性和恢复速度：</p>
-<ol>
-<li><strong>RDB 定期备份</strong>：<ul>
-<li>每隔一段时间（如每 15 分钟或每小时）生成一次 RDB 快照，用于快速恢复。</li>
-</ul>
-</li>
-<li><strong>AOF 作为增量备份</strong>：<ul>
-<li>在两次 RDB 快照之间，使用 AOF 记录增量数据，确保数据不会丢失。</li>
-</ul>
-</li>
-<li><strong>恢复过程</strong>：<ul>
-<li>启动 Redis 时，先加载 RDB 快照，快速恢复大部分数据。</li>
-<li>然后应用 AOF 日志中的增量数据，确保数据的完整性。</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="4-面试中的常见问题"><a href="#4-面试中的常见问题" class="headerlink" title="4. 面试中的常见问题"></a>4. 面试中的常见问题</h3><h4 id="问题-1：RDB-和-AOF-的区别是什么？"><a href="#问题-1：RDB-和-AOF-的区别是什么？" class="headerlink" title="问题 1：RDB 和 AOF 的区别是什么？"></a><strong>问题 1：RDB 和 AOF 的区别是什么？</strong></h4><ul>
-<li><strong>回答</strong>：<ul>
-<li><strong>RDB 是快照持久化</strong>，定期生成内存数据的完整备份，文件紧凑，恢复速度快，但可能会丢失快照之间的数据。</li>
-<li><strong>AOF 是日志持久化</strong>，实时记录写操作命令，数据安全性高，最多只会丢失最后一次同步之后的数据，但文件体积大，恢复速度慢。</li>
-</ul>
-</li>
-</ul>
-<h4 id="问题-2：如何解决-AOF-文件过大问题？"><a href="#问题-2：如何解决-AOF-文件过大问题？" class="headerlink" title="问题 2：如何解决 AOF 文件过大问题？"></a><strong>问题 2：如何解决 AOF 文件过大问题？</strong></h4><ul>
-<li><strong>回答</strong>：<ul>
-<li>使用 <code>BGREWRITEAOF</code> 手动触发日志重写。</li>
-<li>配置 <code>auto-aof-rewrite-percentage</code> 和 <code>auto-aof-rewrite-min-size</code> 参数，让 Redis 自动触发日志重写。</li>
-</ul>
-</li>
-</ul>
-<h4 id="问题-3：如果-Redis-同时使用-RDB-和-AOF，启动时会加载哪个文件？"><a href="#问题-3：如果-Redis-同时使用-RDB-和-AOF，启动时会加载哪个文件？" class="headerlink" title="问题 3：如果 Redis 同时使用 RDB 和 AOF，启动时会加载哪个文件？"></a><strong>问题 3：如果 Redis 同时使用 RDB 和 AOF，启动时会加载哪个文件？</strong></h4><ul>
-<li><strong>回答</strong>：<ul>
-<li>如果同时使用 RDB 和 AOF，Redis 会优先加载 AOF 文件。如果 AOF 文件不存在，则加载 RDB 文件。</li>
-</ul>
-</li>
-</ul>
-<h4 id="问题-4：如何避免-RDB-快照对性能的影响？"><a href="#问题-4：如何避免-RDB-快照对性能的影响？" class="headerlink" title="问题 4：如何避免 RDB 快照对性能的影响？"></a><strong>问题 4：如何避免 RDB 快照对性能的影响？</strong></h4><ul>
-<li><strong>回答</strong>：<ul>
-<li>使用 <code>BGSAVE</code> 命令在后台生成快照，避免阻塞主线程。</li>
-<li>合理设置快照频率，避免过于频繁地生成快照。</li>
-</ul>
-</li>
-</ul>
-<hr>
-
+<li>在 Redis 重启时，如果配置了 <code>save</code> 指令，Redis 会自动加载 <code>.rdb</code> 文件恢复数据。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/onlycpfans/2025/03/15/redis%E6%8C%81%E4%B9%85%E5%8C%96/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
