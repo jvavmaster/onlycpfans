@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/onlycpfans/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/onlycpfans/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/onlycpfans/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/onlycpfans/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/onlycpfans/css/main.css">
+
+
+<link rel="stylesheet" href="/onlycpfans/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jvavmaster.github.io","root":"/onlycpfans/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Java反射入门反射基础概念反射(Reflection)是Java语言的一个重要特性，它允许程序在运行时动态地获取类的信息并操作类或对象的属性、方法。 核心特点：  运行时获取类的完整结构信息  动态创建对象实例  动态调用方法和访问属性  绕过访问权限检查（访问私有成员）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java反射入门">
+<meta property="og:url" content="https://jvavmaster.github.io/onlycpfans/2025/04/24/%E5%8F%8D%E5%B0%84/index.html">
+<meta property="og:site_name" content="Onlycpfans">
+<meta property="og:description" content="Java反射入门反射基础概念反射(Reflection)是Java语言的一个重要特性，它允许程序在运行时动态地获取类的信息并操作类或对象的属性、方法。 核心特点：  运行时获取类的完整结构信息  动态创建对象实例  动态调用方法和访问属性  绕过访问权限检查（访问私有成员）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-04-24T10:53:45.035Z">
+<meta property="article:modified_time" content="2025-04-24T10:56:15.191Z">
+<meta property="article:author" content="CPF">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://jvavmaster.github.io/onlycpfans/2025/04/24/%E5%8F%8D%E5%B0%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java反射入门 | Onlycpfans</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style>.darkmode--activated{--body-bg-color:#282828;--content-bg-color:#333;--card-bg-color:#555;--text-color:#ccc;--blockquote-color:#bbb;--link-color:#ccc;--link-hover-color:#eee;--brand-color:#ddd;--brand-hover-color:#ddd;--table-row-odd-bg-color:#282828;--table-row-hover-bg-color:#363636;--menu-item-bg-color:#555;--btn-default-bg:#222;--btn-default-color:#ccc;--btn-default-border-color:#555;--btn-default-hover-bg:#666;--btn-default-hover-color:#ccc;--btn-default-hover-border-color:#666;--highlight-background:#282b2e;--highlight-foreground:#a9b7c6;--highlight-gutter-background:#34393d;--highlight-gutter-foreground:#9ca9b6}.darkmode--activated img{opacity:.75}.darkmode--activated img:hover{opacity:.9}.darkmode--activated code{color:#69dbdc;background:0 0}button.darkmode-toggle{z-index:9999}.darkmode-ignore,img{display:flex!important}.beian img{display:inline-block!important}</style></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/onlycpfans/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Onlycpfans</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/onlycpfans/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/onlycpfans/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/onlycpfans/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/onlycpfans/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/onlycpfans/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a>
+
+  </li>
+        <li class="menu-item menu-item-photos">
+
+    <a href="/onlycpfans/photos/" rel="section"><i class="fa fa-camera fa-fw"></i>相册</a>
+
+  </li>
+        <li class="menu-item menu-item-friend-links">
+
+    <a href="/onlycpfans/friend-links/" rel="section"><i class="fa fa-link fa-fw"></i>友链</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jvavmaster.github.io/onlycpfans/2025/04/24/%E5%8F%8D%E5%B0%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jvavmaster/PicBed@main/onlycpfans/jvavmaster.jpg">
+      <meta itemprop="name" content="CPF">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Onlycpfans">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java反射入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-04-24 18:53:45 / 修改时间：18:56:15" itemprop="dateCreated datePublished" datetime="2025-04-24T18:53:45+08:00">2025-04-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/onlycpfans/categories/java/" itemprop="url" rel="index"><span itemprop="name">java</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java反射入门"><a href="#Java反射入门" class="headerlink" title="Java反射入门"></a>Java反射入门</h1><h2 id="反射基础概念"><a href="#反射基础概念" class="headerlink" title="反射基础概念"></a>反射基础概念</h2><p>反射(Reflection)是Java语言的一个重要特性，它允许程序在运行时动态地获取类的信息并操作类或对象的属性、方法。</p>
+<p><strong>核心特点</strong>：</p>
+<ul>
+<li><p>运行时获取类的完整结构信息</p>
+</li>
+<li><p>动态创建对象实例</p>
+</li>
+<li><p>动态调用方法和访问属性</p>
+</li>
+<li><p>绕过访问权限检查（访问私有成员）</p>
+<span id="more"></span></li>
+</ul>
+<h2 id="反射核心API"><a href="#反射核心API" class="headerlink" title="反射核心API"></a>反射核心API</h2><h3 id="1-获取Class对象的三种方式"><a href="#1-获取Class对象的三种方式" class="headerlink" title="1. 获取Class对象的三种方式"></a>1. 获取Class对象的三种方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 通过类名.class获取</span></span><br><span class="line">Class&lt;String&gt; stringClass = String.class;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 通过对象.getClass()获取</span></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">Class&lt;?&gt; strClass = str.getClass();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 通过Class.forName()获取（最常用）</span></span><br><span class="line">Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;java.lang.String&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-常用反射操作"><a href="#2-常用反射操作" class="headerlink" title="2. 常用反射操作"></a>2. 常用反射操作</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建实例</span></span><br><span class="line">Class&lt;?&gt; clazz = Class.forName(<span class="string">&quot;com.example.User&quot;</span>);</span><br><span class="line"><span class="type">Object</span> <span class="variable">user</span> <span class="operator">=</span> clazz.newInstance(); <span class="comment">// 调用无参构造</span></span><br><span class="line"><span class="comment">// 或</span></span><br><span class="line">Constructor&lt;?&gt; constructor = clazz.getConstructor(String.class, <span class="type">int</span>.class);</span><br><span class="line"><span class="type">Object</span> <span class="variable">user</span> <span class="operator">=</span> constructor.newInstance(<span class="string">&quot;张三&quot;</span>, <span class="number">25</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用方法</span></span><br><span class="line"><span class="type">Method</span> <span class="variable">method</span> <span class="operator">=</span> clazz.getMethod(<span class="string">&quot;setName&quot;</span>, String.class);</span><br><span class="line">method.invoke(user, <span class="string">&quot;李四&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问字段</span></span><br><span class="line"><span class="type">Field</span> <span class="variable">field</span> <span class="operator">=</span> clazz.getDeclaredField(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">field.setAccessible(<span class="literal">true</span>); <span class="comment">// 突破私有访问限制</span></span><br><span class="line">field.set(user, <span class="number">30</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="反射的应用场景"><a href="#反射的应用场景" class="headerlink" title="反射的应用场景"></a>反射的应用场景</h2><ol>
+<li><strong>框架开发</strong>：Spring、Hibernate等框架大量使用反射实现依赖注入、动态代理等功能</li>
+<li><strong>动态代理</strong>：AOP编程的基础</li>
+<li><strong>注解处理</strong>：运行时通过反射读取注解信息</li>
+<li><strong>单元测试</strong>：测试私有方法</li>
+<li><strong>通用工具</strong>：如BeanUtils.copyProperties等属性拷贝工具</li>
+</ol>
+<h2 id="反射的性能问题与优化"><a href="#反射的性能问题与优化" class="headerlink" title="反射的性能问题与优化"></a>反射的性能问题与优化</h2><p>反射虽然强大，但存在明显的性能问题：</p>
+<ol>
+<li><strong>动态解析开销</strong>：反射操作比直接调用慢很多。每次反射调用都需要解析类、方法、字段的元数据；需要检查方法签名、参数类型等</li>
+<li><strong>JIT优化受限</strong>：直接调用可以被JIT内联优化；反射调用是动态的，难以优化</li>
+<li><strong>安全检查</strong>：每次调用都要检查访问权限；需要验证参数类型等</li>
+</ol>
+<p><strong>优化建议</strong>：</p>
+<ul>
+<li><p><strong>缓存反射对象</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">// 不好的做法：每次调用都获取Method</span><br><span class="line">public void slowReflection(Object obj, String methodName) throws Exception &#123;</span><br><span class="line">    Method method = obj.getClass().getMethod(methodName);</span><br><span class="line">    method.invoke(obj);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 好的做法：缓存Method</span><br><span class="line">private static Map&lt;String, Method&gt; methodCache = new HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">public void fastReflection(Object obj, String methodName) throws Exception &#123;</span><br><span class="line">    Method method = methodCache.get(methodName);</span><br><span class="line">    if (method == null) &#123;</span><br><span class="line">        method = obj.getClass().getMethod(methodName);</span><br><span class="line">        methodCache.put(methodName, method);</span><br><span class="line">    &#125;</span><br><span class="line">    method.invoke(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>**跳过安全检查setAccessible(true)**：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Field field = clazz.getDeclaredField(&quot;privateField&quot;);</span><br><span class="line">field.setAccessible(true);  // 只需设置一次</span><br><span class="line">// 后续访问不再检查访问权限</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="反射的安全问题"><a href="#反射的安全问题" class="headerlink" title="反射的安全问题"></a>反射的安全问题</h2><p>反射可以突破Java的访问控制机制，带来安全隐患：</p>
+<ol>
+<li><strong>访问私有成员</strong>：可能导致敏感信息泄露</li>
+<li><strong>修改final字段</strong>：破坏不可变性设计</li>
+<li><strong>调用任意方法</strong>：可能执行危险操作</li>
+</ol>
+<h2 id="反射的应用示例"><a href="#反射的应用示例" class="headerlink" title="反射的应用示例"></a>反射的应用示例</h2><h3 id="Spring-IOC容器简化实现"><a href="#Spring-IOC容器简化实现" class="headerlink" title="Spring IOC容器简化实现"></a>Spring IOC容器简化实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 简易IOC容器实现</span></span><br><span class="line"><span class="comment"> * 演示反射如何用于依赖注入</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SimpleContainer</span> &#123;</span><br><span class="line">    <span class="comment">// 存储所有Bean实例，key为Bean名称</span></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, Object&gt; beans = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注册Bean到容器</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> name Bean名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> className 类全限定名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">register</span><span class="params">(String name, String className)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 1. 通过反射加载类</span></span><br><span class="line">        Class&lt;?&gt; clazz = Class.forName(className);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 2. 创建实例（调用无参构造）</span></span><br><span class="line">        <span class="type">Object</span> <span class="variable">instance</span> <span class="operator">=</span> clazz.getDeclaredConstructor().newInstance();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 3. 存入容器</span></span><br><span class="line">        beans.put(name, instance);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取Bean实例</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">getBean</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> beans.get(name);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 依赖注入方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">injectDependencies</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 遍历所有Bean</span></span><br><span class="line">        <span class="keyword">for</span> (Object bean : beans.values()) &#123;</span><br><span class="line">            <span class="comment">// 获取Bean的Class对象</span></span><br><span class="line">            Class&lt;?&gt; clazz = bean.getClass();</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 遍历所有字段</span></span><br><span class="line">            <span class="keyword">for</span> (Field field : clazz.getDeclaredFields()) &#123;</span><br><span class="line">                <span class="comment">// 检查是否有@Autowired注解</span></span><br><span class="line">                <span class="keyword">if</span> (field.isAnnotationPresent(Autowired.class)) &#123;</span><br><span class="line">                    <span class="comment">// 1. 获取依赖的Bean（按字段名查找）</span></span><br><span class="line">                    <span class="type">Object</span> <span class="variable">dependency</span> <span class="operator">=</span> beans.get(field.getName());</span><br><span class="line">                    </span><br><span class="line">                    <span class="comment">// 2. 突破私有访问限制</span></span><br><span class="line">                    field.setAccessible(<span class="literal">true</span>);</span><br><span class="line">                    </span><br><span class="line">                    <span class="comment">// 3. 注入依赖</span></span><br><span class="line">                    field.set(bean, dependency);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/onlycpfans/2025/03/24/mysql%E7%B4%A2%E5%BC%95%E5%85%A5%E9%97%A8/" rel="prev" title="MySQL索引入门">
+      <i class="fa fa-chevron-left"></i> MySQL索引入门
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/onlycpfans/2025/04/24/%E7%BC%93%E5%AD%98/" rel="next" title="缓存问题详解">
+      缓存问题详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%8F%8D%E5%B0%84%E5%85%A5%E9%97%A8"><span class="nav-number">1.</span> <span class="nav-text">Java反射入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">反射基础概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E6%A0%B8%E5%BF%83API"><span class="nav-number">1.2.</span> <span class="nav-text">反射核心API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E8%8E%B7%E5%8F%96Class%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 获取Class对象的三种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%B8%B8%E7%94%A8%E5%8F%8D%E5%B0%84%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 常用反射操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.3.</span> <span class="nav-text">反射的应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98%E4%B8%8E%E4%BC%98%E5%8C%96"><span class="nav-number">1.4.</span> <span class="nav-text">反射的性能问题与优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.</span> <span class="nav-text">反射的安全问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%B0%84%E7%9A%84%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.6.</span> <span class="nav-text">反射的应用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-IOC%E5%AE%B9%E5%99%A8%E7%AE%80%E5%8C%96%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.6.1.</span> <span class="nav-text">Spring IOC容器简化实现</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="CPF"
+      src="https://cdn.jsdelivr.net/gh/jvavmaster/PicBed@main/onlycpfans/jvavmaster.jpg">
+  <p class="site-author-name" itemprop="name">CPF</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/onlycpfans/archives">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/onlycpfans/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/onlycpfans/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/jvavmaster/onlycpfans" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;jvavmaster&#x2F;onlycpfans" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2025</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">CPF</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+        
+<div class="busuanzi-count">
+  <script data-pjax async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script color='150,150,150' opacity='1' zIndex='-1' count='300' src="/onlycpfans/lib/canvas-nest/canvas-nest-nomobile.min.js"></script>
+  <script src="/onlycpfans/lib/anime.min.js"></script>
+  <script src="/onlycpfans/lib/pjax/pjax.min.js"></script>
+  <script src="/onlycpfans/lib/velocity/velocity.min.js"></script>
+  <script src="/onlycpfans/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/onlycpfans/js/utils.js"></script>
+
+<script src="/onlycpfans/js/motion.js"></script>
+
+
+<script src="/onlycpfans/js/schemes/muse.js"></script>
+
+
+<script src="/onlycpfans/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+    </div>
+</body>
+</html>

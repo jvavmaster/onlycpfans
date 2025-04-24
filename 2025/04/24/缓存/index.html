@@ -20,20 +20,19 @@
     var CONFIG = {"hostname":"jvavmaster.github.io","root":"/onlycpfans/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="多年以后，面对理发店，沈将军将会回想起通用技术祖先被学生批斗的那个遥远的下午。 “你被解雇了，春！”，一个领头的学生站在高台上，她的声音在操场上回荡，引起一片附和的喧嚣。 就在春老师微微愣神的瞬间，一个黄毛学生趁机跃起，灵巧地夺过了他那顶鸭舌帽，在手中把玩着。春光滑的头顶瞬间暴露在阳光下，反射出一道刺眼的光芒。顿时，欢笑声四散开来，操场上充满了快活的气息。">
+  <meta name="description" content="缓存问题详解一、缓存穿透（查不存在的数据）问题描述：请求查询数据库中根本不存在的数据（比如ID&#x3D;-1的数据），导致每次请求都绕过缓存直接访问数据库。 解决方案：  缓存空对象： 原理：即使数据库查询为空，也把这个”空结果”缓存起来（例如存为null） 示例代码：1234567891011&#x2F;&#x2F; 伪代码示例Object data &#x3D; cache.get(key);if(data &#x3D;&#x3D; nul">
 <meta property="og:type" content="article">
-<meta property="og:title" content="三体 · 谎中往事">
-<meta property="og:url" content="https://jvavmaster.github.io/onlycpfans/2023/06/08/%E4%B8%89%E4%BD%93%20%C2%B7%20%E8%B0%8E%E4%B8%AD%E5%BE%80%E4%BA%8B/index.html">
+<meta property="og:title" content="缓存问题详解">
+<meta property="og:url" content="https://jvavmaster.github.io/onlycpfans/2025/04/24/%E7%BC%93%E5%AD%98/index.html">
 <meta property="og:site_name" content="Onlycpfans">
-<meta property="og:description" content="多年以后，面对理发店，沈将军将会回想起通用技术祖先被学生批斗的那个遥远的下午。 “你被解雇了，春！”，一个领头的学生站在高台上，她的声音在操场上回荡，引起一片附和的喧嚣。 就在春老师微微愣神的瞬间，一个黄毛学生趁机跃起，灵巧地夺过了他那顶鸭舌帽，在手中把玩着。春光滑的头顶瞬间暴露在阳光下，反射出一道刺眼的光芒。顿时，欢笑声四散开来，操场上充满了快活的气息。">
+<meta property="og:description" content="缓存问题详解一、缓存穿透（查不存在的数据）问题描述：请求查询数据库中根本不存在的数据（比如ID&#x3D;-1的数据），导致每次请求都绕过缓存直接访问数据库。 解决方案：  缓存空对象： 原理：即使数据库查询为空，也把这个”空结果”缓存起来（例如存为null） 示例代码：1234567891011&#x2F;&#x2F; 伪代码示例Object data &#x3D; cache.get(key);if(data &#x3D;&#x3D; nul">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-06-08T00:35:12.000Z">
-<meta property="article:modified_time" content="2024-09-06T12:03:47.716Z">
+<meta property="article:published_time" content="2025-04-24T10:53:56.490Z">
+<meta property="article:modified_time" content="2025-04-24T10:56:31.652Z">
 <meta property="article:author" content="CPF">
-<meta property="article:tag" content="春">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://jvavmaster.github.io/onlycpfans/2023/06/08/%E4%B8%89%E4%BD%93%20%C2%B7%20%E8%B0%8E%E4%B8%AD%E5%BE%80%E4%BA%8B/">
+<link rel="canonical" href="https://jvavmaster.github.io/onlycpfans/2025/04/24/%E7%BC%93%E5%AD%98/">
 
 
 <script id="page-configurations">
@@ -46,7 +45,7 @@
   };
 </script>
 
-  <title>三体 · 谎中往事 | Onlycpfans</title>
+  <title>缓存问题详解 | Onlycpfans</title>
   
 
 
@@ -176,7 +175,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jvavmaster.github.io/onlycpfans/2023/06/08/%E4%B8%89%E4%BD%93%20%C2%B7%20%E8%B0%8E%E4%B8%AD%E5%BE%80%E4%BA%8B/">
+    <link itemprop="mainEntityOfPage" href="https://jvavmaster.github.io/onlycpfans/2025/04/24/%E7%BC%93%E5%AD%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://cdn.jsdelivr.net/gh/jvavmaster/PicBed@main/onlycpfans/jvavmaster.jpg">
@@ -189,7 +188,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          三体 · 谎中往事
+          缓存问题详解
         </h1>
 
         <div class="post-meta">
@@ -198,24 +197,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-06-08 08:35:12" itemprop="dateCreated datePublished" datetime="2023-06-08T08:35:12+08:00">2023-06-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2024-09-06 20:03:47" itemprop="dateModified" datetime="2024-09-06T20:03:47+08:00">2024-09-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/onlycpfans/categories/%E5%B0%8F%E8%AF%B4/" itemprop="url" rel="index"><span itemprop="name">小说</span></a>
-                </span>
+              <time title="创建时间：2025-04-24 18:53:56 / 修改时间：18:56:31" itemprop="dateCreated datePublished" datetime="2025-04-24T18:53:56+08:00">2025-04-24</time>
             </span>
 
           
@@ -236,30 +220,97 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>多年以后，面对理发店，沈将军将会回想起通用技术祖先被学生批斗的那个遥远的下午。</p>
-<p>“你被解雇了，春！”，一个领头的学生站在高台上，她的声音在操场上回荡，引起一片附和的喧嚣。</p>
-<p>就在春老师微微愣神的瞬间，一个黄毛学生趁机跃起，灵巧地夺过了他那顶鸭舌帽，在手中把玩着。春光滑的头顶瞬间暴露在阳光下，反射出一道刺眼的光芒。顿时，欢笑声四散开来，操场上充满了快活的气息。</p>
-<span id="more"></span>
+        <h1 id="缓存问题详解"><a href="#缓存问题详解" class="headerlink" title="缓存问题详解"></a>缓存问题详解</h1><h2 id="一、缓存穿透（查不存在的数据）"><a href="#一、缓存穿透（查不存在的数据）" class="headerlink" title="一、缓存穿透（查不存在的数据）"></a>一、缓存穿透（查不存在的数据）</h2><p><strong>问题描述</strong>：请求查询数据库中根本不存在的数据（比如ID&#x3D;-1的数据），导致每次请求都绕过缓存直接访问数据库。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><strong>缓存空对象</strong>：<ul>
+<li>原理：即使数据库查询为空，也把这个”空结果”缓存起来（例如存为<code>null</code>）</li>
+<li>示例代码：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码示例</span></span><br><span class="line"><span class="type">Object</span> <span class="variable">data</span> <span class="operator">=</span> cache.get(key);</span><br><span class="line"><span class="keyword">if</span>(data == <span class="literal">null</span>) &#123;</span><br><span class="line">    data = db.query(key);</span><br><span class="line">    <span class="keyword">if</span>(data == <span class="literal">null</span>) &#123;  <span class="comment">// 数据库也没有</span></span><br><span class="line">        cache.set(key, <span class="string">&quot;NULL&quot;</span>, <span class="number">300</span>); <span class="comment">// 缓存空值5分钟</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        cache.set(key, data, <span class="number">3600</span>); <span class="comment">// 缓存真实数据1小时</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> data.equals(<span class="string">&quot;NULL&quot;</span>) ? <span class="literal">null</span> : data;</span><br></pre></td></tr></table></figure></li>
+<li>注意事项：要给空值设置较短的TTL（如5分钟），避免占用太多内存</li>
+</ul>
+</li>
+</ol>
+  <span id="more"></span>
+<ol start="2">
+<li><strong>布隆过滤器（Bloom Filter）</strong>：<ul>
+<li><strong>数据结构原理</strong>：<ul>
+<li>使用一个很大的<strong>位数组（bit array）</strong>和多个哈希函数</li>
+<li>插入元素时：用多个哈希函数计算元素的哈希值，将对应位数组位置设为1</li>
+<li>查询元素时：用同样的哈希函数计算，如果所有对应位都是1，则”可能存在”；如果有任一位是0，则”肯定不存在”</li>
+</ul>
+</li>
+<li><strong>特点</strong>：<ul>
+<li>空间效率极高（相比HashSet）</li>
+<li>判断存在时不一定存在,如果判断不存在则一定不存在</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="二、缓存击穿（热点key突然失效）"><a href="#二、缓存击穿（热点key突然失效）" class="headerlink" title="二、缓存击穿（热点key突然失效）"></a>二、缓存击穿（热点key突然失效）</h2><p><strong>问题描述</strong>：缓存击穿是指当一个热点key在缓存中过期时，大量并发请求同时涌入，导致所有请求都直接访问数据库，造成数据库瞬时压力过大的现象。这种情况通常发生在高并发场景下对热点数据的访问。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><strong>互斥锁方案</strong>：</li>
+</ol>
+<p>互斥锁方案通过控制只有一个线程能够重建缓存来解决击穿问题。</p>
+<p><strong>核心概念解释</strong>：</p>
+<ul>
+<li><strong>互斥锁（Mutex Lock）</strong>：一种同步机制，确保同一时间只有一个线程可以访问特定资源或执行特定代码段。在分布式系统中，需要使用分布式锁来实现跨进程的互斥。</li>
+<li><strong>分布式锁</strong>：在分布式环境下协调多节点访问共享资源的机制，常用Redis的SETNX命令（SET if Not eXists）实现，确保只有一个客户端能成功获取锁。</li>
+</ul>
+<p>具体实现如下：</p>
+<ul>
+<li>当发现缓存失效时，线程首先尝试获取分布式锁</li>
+<li>获取锁成功的线程负责查询数据库并更新缓存</li>
+<li>其他线程等待锁释放后直接从缓存获取数据</li>
+<li>为避免死锁，需要设置合理的锁超时时间</li>
+</ul>
+<ol start="2">
+<li><strong>逻辑过期方案</strong>：</li>
+</ol>
+<p>将过期时间存储在value中来实现热点key物理永不过期，逻辑判断过期：</p>
+<ul>
+<li>缓存数据包含实际数据和逻辑过期时间</li>
+<li>读取时检查逻辑过期时间</li>
+<li>如果数据已逻辑过期，触发异步更新</li>
+<li>始终返回数据，可能是脏数据</li>
+</ul>
+<p>数据结构示例：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span> <span class="string">&quot;实际数据内容&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;expire&quot;</span><span class="punctuation">:</span> <span class="number">114514</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p>然而，春依然对着天空出神，仿佛无事发生。学生们的嘲笑声和欢呼声似乎已经远去，变得模糊不清。他的目光越过了嘲笑他的学生，越过了高台，直直地望向天空中的太阳。那一刻，只有春注意到，太阳上出现了一个小黑点。</p>
-<p>那个黑点一开始是如此微小，几乎难以察觉。它静静地挂在太阳的边缘，仿佛一颗孤独的黑星，在耀眼的阳光下显得微不足道。然而，几秒钟之后，它的体积以惊人的速度迅速扩展，从一个微小的斑点扩展成一个清晰可见的黑色圆点，紧接着又变成了一个迅速扩大的黑色圆圈。</p>
-<p>天空中的光线开始微微变暗，黑点的扩展带来了一种不祥的预感。这个黑点继续膨胀着，仿佛在吸收周围的光芒。它的边缘变得更加清晰，逐渐形成一个完美的圆形。</p>
-<p>突然，黑点的中心开始反射出银色的光芒，那光芒如同水银般流动，迅速填满整个黑色圆圈。黑点彻底变成了一个银色的球体，表面光滑如镜，反射出一张谎言中学精致的俯视图。阳光在它的表面折射出刺眼的光芒，仿佛整个天空都被那银色的球体所支配。</p>
-<p>这个球体的速度极快，几乎是在一瞬间便出现在所有人的视野中。学生们的笑声戛然而止，所有人都仰望着那从天而降的不明物体，心中涌起一种难以言喻的恐惧。那是水滴——这个宇宙中最可怕的毁灭者，正以难以想象的速度向春俯冲而来。</p>
-<p>所有的嘲笑和不解在这一刻都变成了惊恐和绝望。学生们屏住呼吸，眼睁睁看着那个毁灭性的物体朝春飞来。然而，春依然站立不动，目光坚定而平静，仿佛早已预见了这一切。</p>
-<p>水滴无情地切割过空气，如同一把绝世利刃，任何物质在它面前都显得脆弱不堪。当它接触到春的光头时，所有人都以为这将是毁灭的一刻。</p>
-<p>然而，春的光头并不是普通的物质，而是由强互作用力物质构成，它比太阳系中硬度最高的物质还要强上百万倍。他的光头如同一面完美的镜子，将周围的一切反射得纤毫毕现，甚至能清晰地看到学生们惊愕的表情。水滴撞上了这片坚不可摧的光滑表面，巨大的反作用力瞬间爆发。水滴表面开始裂开，内部结构在极端的应力下迅速瓦解。几乎是眨眼之间，水滴便在无形的力量中崩溃成无数碎片，如同星尘般散落在春的周围。这个过程如此迅速，以至于学生们根本无法看清楚发生了什么。他们只看到一个模糊的银色闪光，然后春被那光芒所包围，仿佛瞬间化为了灰烬。</p>
-<p>然而，当银色的光芒逐渐消散，春依然站在那里，面色如常，仿佛这一切只是平静的日常。学生们惊愕地发现，水滴已经消失得无影无踪，只留下了一地的微小碎片，而春毫发无损。</p>
-<p>学生们围绕着春，眼中的怀疑和敌意逐渐消散，取而代之的是一种难以名状的敬畏和沉默。他们从未理解过春，也从未试图理解。曾几何时，春在他们眼中只是一个被孤立的怪人，一个神秘莫测的面壁人。他们的嘲笑和敌视，如今显得如此愚蠢和浅薄。</p>
-<p>也许，春并不需要这些迟来的理解和崇敬。</p>
-<p>春抬起脚，缓缓向前走去，四周的人群自动为他让开了道路。阳光透过稀疏的云层洒在他身上，光影在他的光头上跳跃，闪烁着微弱而坚定的光芒。</p>
-<p>此时，一个智子迅速逼近，在春的光头上低维展开。</p>
-<p>三体星系的实验室内，几位三体人科学家正通过智子的视角观察春的头部。显微镜不断放大着倍数，微米级、纳米级、皮米级······每一次放大，春的光头表面依然绝对光滑，没有任何破损。</p>
-<p>“这是不可能的，”一位科学家惊呼。操作员把显微镜从春的头上移开，对准了一片水滴残存的外壳。在极致的放大倍数下，绝对光滑的水滴，在屏幕上变得像乱石堆一样粗糙。</p>
-<p>显微镜重新对准了春的头，屏幕上仍是光滑的表面。“再把倍数调大些！”科学家命令道。</p>
-<p>操作员摇了摇头，这已经是三体文明所能观测到的微观极限了。</p>
-<p>两个多世纪前，一个虫子文明的作家在他的科幻小说《2001:太空奥德赛》中描述了一个外星超级文明留在月球上的黑色方碑，考察者用普通尺子量方碑的三道边，其长度比例是1:3:9，以后，不管用什么更精确的 方式测量，穷尽了地球上测量技术的最高精度，方碑三边的比例仍是 精确的1:3:9，没有任何误差。克拉克写道:那个文明以这种方式，狂妄地显示了自己的力量。</p>
-<p>现在，三体文明正面对着一种更狂妄的力量展示。</p>
+<p><strong>方案对比</strong></p>
+<table>
+<thead>
+<tr>
+<th>方案</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>互斥锁</td>
+<td>强一致性，不会返回旧数据</td>
+<td>等待锁的线程会有延迟，实现较复杂</td>
+<td>对一致性要求高的场景</td>
+</tr>
+<tr>
+<td>逻辑过期</td>
+<td>无等待时间，性能更好</td>
+<td>可能返回脏数据，实现复杂</td>
+<td>高并发且允许短暂不一致的场景</td>
+</tr>
+</tbody></table>
+<p>在实际应用中，可以根据业务需求选择合适的方案，或者组合使用这两种方案。对于核心业务数据可以采用互斥锁方案保证强一致性，对于非核心数据可以采用逻辑过期方案提高性能。</p>
+<h2 id="三、缓存雪崩（大量key同时失效）"><a href="#三、缓存雪崩（大量key同时失效）" class="headerlink" title="三、缓存雪崩（大量key同时失效）"></a>三、缓存雪崩（大量key同时失效）</h2><p><strong>问题描述</strong>：大量缓存key在同一时间过期，或Redis服务宕机，导致所有请求涌向数据库。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li><p><strong>差异化过期时间</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 基础过期时间 + 随机偏移量（0-300秒）</span></span><br><span class="line"><span class="type">int</span> <span class="variable">expireTime</span> <span class="operator">=</span> <span class="number">3600</span> + (<span class="type">int</span>)(Math.random() * <span class="number">300</span>); </span><br><span class="line">cache.set(key, value, expireTime);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>多级缓存架构</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用户请求 → CDN缓存 → 前端本地缓存 → 应用级缓存（如Caffeine） → 分布式缓存（Redis） → 数据库</span><br></pre></td></tr></table></figure></li>
+</ol>
 
     </div>
 
@@ -268,20 +319,17 @@
     
 
       <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/onlycpfans/tags/%E6%98%A5/" rel="tag"># 春</a>
-          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/onlycpfans/2023/07/09/%E5%AD%9D%E7%BB%8F%20%C2%B7%20%E6%98%A5%E7%BA%A6/" rel="next" title="孝经 · 春约">
-      孝经 · 春约 <i class="fa fa-chevron-right"></i>
+    <a href="/onlycpfans/2025/04/24/%E5%8F%8D%E5%B0%84/" rel="prev" title="Java反射入门">
+      <i class="fa fa-chevron-left"></i> Java反射入门
     </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -340,6 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">缓存问题详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%EF%BC%88%E6%9F%A5%E4%B8%8D%E5%AD%98%E5%9C%A8%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">一、缓存穿透（查不存在的数据）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%BC%93%E5%AD%98%E5%87%BB%E7%A9%BF%EF%BC%88%E7%83%AD%E7%82%B9key%E7%AA%81%E7%84%B6%E5%A4%B1%E6%95%88%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">二、缓存击穿（热点key突然失效）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%BC%93%E5%AD%98%E9%9B%AA%E5%B4%A9%EF%BC%88%E5%A4%A7%E9%87%8Fkey%E5%90%8C%E6%97%B6%E5%A4%B1%E6%95%88%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">三、缓存雪崩（大量key同时失效）</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
